@@ -16,7 +16,8 @@ class FlashMessage extends Component
         return view('livewire.shared.flash-message');
     }
 
-    public function flashMessage($type, $message){
+    public function flashMessage($type, $message)
+    {
         session()->flash($type, $message);
     }
 }

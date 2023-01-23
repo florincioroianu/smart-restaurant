@@ -10,17 +10,20 @@ class Category extends Component
 {
     use LivewireUtil;
 
-    public $name, $type='food', $is_main_dish = false;
+    public string $name = '';
+    public bool $is_main_dish = false;
+    public string $type = 'food';
 
-    private $fillable = ['name', 'type', 'is_main_dish'];
-    private $validation_rule = [
+    private array $fillable = ['name', 'type', 'is_main_dish'];
+    private array $validation_rule = [
         'name' => 'required',
         'type' => 'required|in:food,drink',
         'is_main_dish' => 'boolean'
     ];
 
-    public function mount(){
-        $this->Model = New ModelsMenuCategory();
+    public function mount()
+    {
+        $this->Model = new ModelsMenuCategory();
         $this->fills = $this->fillable;
         $this->rules = $this->validation_rule;
     }

@@ -23,7 +23,7 @@ class CategoryDataTable extends LivewireDatatable
                 ->delete(),
 
             Column::name('name')
-                ->label('Name')
+                ->label('Nume')
                 ->editable()
                 ->searchable()
                 ->filterable(),

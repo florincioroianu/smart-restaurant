@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\OrderDetails;
+use Cart;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -13,16 +14,22 @@ use Livewire\Component;
 
 class WaitressMenu extends Component
 {
-    public $card_pay = false, $tax = 17.5, $orders = [], $order_note = '';
-    public $active_view = '', $cart_count = 0;
+    public string $order_note = '';
+    public array $orders = [];
+    public float $tax = 17.5;
+    public bool $card_pay = false;
+    public int $cart_count = 0;
+    public string $active_view = '';
 
 
-    public function changeView($view){
+    public function changeView($view)
+    {
         $this->active_view = $view;
     }
 
-    public function addOrder($menu, $is_food = 1){
-        \Cart::add([
+    public function addOrder($menu, $is_food = 1)
+    {
+        Cart::add([
             'id' => $name = $menu['name'],
             'name' => $name,
             'price' => $menu['price'],
@@ -36,40 +43,46 @@ class WaitressMenu extends Component
         $this->setCartCount();
     }
 
-    public function setCartCount(){
-        $this->cart_count = \Cart::getContent()->count();
+    public function setCartCount()
+    {
+        $this->cart_count = Cart::getContent()->count();
     }
 
-    public function increaseItem($order){
-        \Cart::update(''.$order['id'], [
+    public function increaseItem($order)
+    {
+        Cart::update('' . $order['id'], [
             'quantity' => 1
         ]);
     }
 
-    public function decreaseItem($order){
-        \Cart::update(''.$order['id'], [
+    public function decreaseItem($order)
+    {
+        Cart::update('' . $order['id'], [
             'quantity' => -1
         ]);
     }
 
 
-    public function removeItem($order) {
-        \Cart::remove(''.$order['id']);
+    public function removeItem($order)
+    {
+        Cart::remove('' . $order['id']);
         $this->setCartCount();
     }
 
-    public function clearItems() {
-        \Cart::clear();
+    public function clearItems()
+    {
+        Cart::clear();
         $this->setCartCount();
     }
 
-    public function saveOrder() {
+    public function saveOrder()
+    {
         $card_pay = $this->card_pay;
 
         $main_order = Order::create([
             'user_id' => auth()->user()->id,
             'card_pay' => $card_pay,
-            'total' => $total = \Cart::getTotal(),
+            'total' => $total = Cart::getTotal(),
             'sub_total' => $card_pay,
             'note' => $this->order_note,
             'status' => 'new'
@@ -77,7 +90,7 @@ class WaitressMenu extends Component
 
         $order_details = [];
 
-        foreach(\Cart::getContent() as $order) {
+        foreach (Cart::getContent() as $order) {
             $order_details[] = [
                 'order_id' => $main_order->id,
                 'menu_id' => $order['attributes']['menu_id'],
@@ -87,7 +100,7 @@ class WaitressMenu extends Component
                 'total' => $order['quantity'] * $order['price']
             ];
 
-            if (! $order['attributes']['is_food']) {
+            if (!$order['attributes']['is_food']) {
                 $inventory = Inventory::where('menu_id', $order['attributes']['menu_id'])->latest()->first();
                 $inventory->current_stock = $inventory->starting_stock - $order['quantity'];
                 $inventory->save();
@@ -99,14 +112,15 @@ class WaitressMenu extends Component
 
         $this->emit('orderAdded');
 
-        \Cart::clear();
+        Cart::clear();
         $this->setCartCount();
         $this->order_note = '';
         $this->card_pay = false;
     }
 
-    public function mount(){
-        \Cart::session(auth()->user()->id);
+    public function mount()
+    {
+        Cart::session(auth()->user()->id);
         $this->setCartCount();
     }
 
@@ -122,7 +136,7 @@ class WaitressMenu extends Component
         return view('livewire.waitress.waitress-menu', [
             'drinks' => $drinks,
             'foods' => $foods,
-            'cart_count' => \Cart::getContent()->count()
+            'cart_count' => Cart::getContent()->count()
         ]);
     }
 }

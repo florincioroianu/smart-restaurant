@@ -17,10 +17,7 @@ class Inventory extends Component
 
     public $stock_id, $menu_id, $starting_stock, $current_stock, $inventory_date, $description, $type,
         $menu_items, $stocks;
-
-    private $fillable = ['stock_id', 'menu_id', 'starting_stock', 'current_stock', 'description', 'type', 'inventory_date'];
-
-    protected $rules = [
+    protected array $rules = [
         'stock_id' => 'integer|required|exists:stocks,id',
         'menu_id' => 'integer|required|exists:menus,id',
         'starting_stock' => 'integer|required',
@@ -28,6 +25,7 @@ class Inventory extends Component
         'type' => 'string|required|exists:types,type',
         'inventory_date' => 'date|required'
     ];
+    private $fillable = ['stock_id', 'menu_id', 'starting_stock', 'current_stock', 'description', 'type', 'inventory_date'];
 
     public function store()
     {
@@ -50,7 +48,8 @@ class Inventory extends Component
         $this->closeModal();
     }
 
-    public function mount(ModelsInventory $model){
+    public function mount(ModelsInventory $model)
+    {
         $this->Model = $model;
         $this->fills = $this->fillable;
     }

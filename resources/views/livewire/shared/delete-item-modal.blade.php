@@ -1,20 +1,19 @@
 <x-jet-confirmation-modal>
     <x-slot name="title">
-        {{ __("Delete Item") }}
+        {{ __("Sterge") }}
     </x-slot>
 
     <x-slot name="content">
-        {{ __("Are you sure you would like to delete this Item?") }}
+        {{ __("Esti sigur ca doresti sa stergi?") }}
     </x-slot>
 
     <x-slot name="footer">
         <x-jet-secondary-button wire:click="closeDeleteModal()" wire:loading.attr="disabled">
-            {{ __('Cancel') }}
+            {{ __('Anuleaza') }}
         </x-jet-secondary-button>
 
         <x-jet-danger-button class="ml-2" wire:click="delete()" wire:loading.attr="disabled">
-            {{ __('Delete') }}
+            {{ __('Sterge') }}
         </x-jet-danger-button>
     </x-slot>
 </x-jet-confirmation-modal>
-

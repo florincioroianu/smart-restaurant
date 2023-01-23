@@ -9,7 +9,8 @@ use Livewire\Component;
 
 class AddOrders extends Component
 {
-    public $card_pay = false, $tax = 17.5;
+    public float $tax = 17.5;
+    public bool $card_pay = false;
 
     public function render(): Factory|View|Application
     {

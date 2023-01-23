@@ -24,8 +24,6 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-
-/** Authenticated Routes */
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/admin/category', Category::class)->name('admin.category');

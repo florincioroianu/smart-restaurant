@@ -15,15 +15,18 @@ class Order extends Model
         return $this->hasMany(OrderDetails::class);
     }
 
-    public function scopeNewOrders(Builder $query){
+    public function scopeNewOrders(Builder $query)
+    {
         return $query->whereStatus('new');
     }
 
-    public function scopeReceivedOrders(Builder $query){
+    public function scopeReceivedOrders(Builder $query)
+    {
         return $query->whereStatus('received');
     }
 
-    public function scopeProcessedOrders(Builder $query){
+    public function scopeProcessedOrders(Builder $query)
+    {
         return $query->whereStatus('processed');
     }
 

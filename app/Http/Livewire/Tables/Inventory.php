@@ -28,17 +28,19 @@ class Inventory extends LivewireDatatable
             NumberColumn::name('current_stock')->filterable()->searchable(),
             Column::name('type')->filterable(['food', 'drink'])->searchable(),
             Column::name('menu.name')->label('Item')->filterable($this->items)->searchable(),
-            Column::name('stock.name')->label('Stock')->filterable($this->stock)->searchable(),
+            Column::name('stock.name')->label('Stoc')->filterable($this->stock)->searchable(),
             DateColumn::name('inventory_date')->filterable()->searchable(),
             Column::name('description')->filterable()->searchable(),
         ];
     }
 
-    public function getItemsProperty(){
+    public function getItemsProperty()
+    {
         return Menu::pluck('name');
     }
 
-    public function getStockProperty(){
+    public function getStockProperty()
+    {
         return Stock::pluck('name');
     }
 }

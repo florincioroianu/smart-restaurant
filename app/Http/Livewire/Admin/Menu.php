@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class Menu extends Component
 {
-    public $input = [
+    public array $input = [
         'name' => '',
         'menu_category_id' => 1,
         'price' => 0,
